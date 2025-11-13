@@ -24,7 +24,7 @@ async function load(){
  show(d);
 }
 // display
-function show(a){tb.innerHTML=a.map(e=><tr><td>${e.name}</td><td>${e.email}</td><td>${e.dept}</td></tr>).join('');}
+function show(a){tb.innerHTML=a.map(e=>`<tr><td>${e.name}</td><td>${e.email}</td><td>${e.dept}</td></tr>`).join('');}
 // search/filter
 s.oninput=f.onchange=()=>show(d.filter(x=>x.name.toLowerCase().includes(s.value.toLowerCase())&&(!f.value||x.dept==f.value)));
 // sort
