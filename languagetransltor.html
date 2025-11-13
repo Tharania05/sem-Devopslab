@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Translator</title>
+<style>
+body{text-align:center;font-family:Arial;background:#eef}
+textarea{width:80%;height:100px;margin:5px;padding:5px}
+select,button{margin:5px;padding:5px}
+</style>
+</head>
+<body>
+<h3>🌍 Translator</h3>
+<select id="from">
+<option value="auto">Auto</option><option value="en">English</option><option value="ta">Tamil</option>
+<option value="hi">Hindi</option><option value="es">Spanish</option><option value="fr">French</option>
+</select>
+➡
+<select id="to">
+<option value="en">English</option><option value="ta">Tamil</option><option value="hi">Hindi</option>
+<option value="es">Spanish</option><option value="fr">French</option>
+</select><br>
+<textarea id="input" placeholder="Type here..."></textarea><br>
+<button onclick="translateText()">Translate</button>
+<h4>Output:</h4>
+<textarea id="output" readonly></textarea><br>
+<button onclick="copy()">Copy</button>
+<script>
+// translate using Google endpoint
+async function translateText(){
+ let t=document.getElementById('input').value,sl=from.value,tl=to.value;
+ if(!t)return alert("Type something!");
+ let u=`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(t)}`;
+ let r=await fetch(u);let j=await r.json();
+ output.value=j[0].map(i=>i[0]).join("");
+}
+// copy result
+function copy(){output.select();document.execCommand('copy');alert("Copied!");}
+</script>
+</body>
+</html>
