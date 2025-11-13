@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Event Scheduler</title>
+<style>
+body{text-align:center;font-family:Arial;background:#eef}
+#cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;max-width:400px;margin:auto}
+.day{background:#fff;padding:15px;border:1px solid #ccc;cursor:pointer}
+.event{font-size:12px;background:#0078ff;color:#fff;padding:2px;border-radius:3px;margin-top:5px}
+form{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;padding:10px;border:1px solid #999}
+</style>
+</head>
+<body>
+<h3>📅 Event Scheduler</h3>
+<button onclick="chg(-1)">◀</button><span id="m"></span><button onclick="chg(1)">▶</button>
+<div id="cal"></div>
+<form id="f">
+  <input id="title" placeholder="Event Title">
+  <input id="loc" placeholder="Location">
+  <input id="time" type="time">
+  <button type="button" onclick="save()">OK</button>
+  <button type="button" onclick="f.style.display='none'">X</button>
+</form>
+<script>
+// setup
+let d=new Date(),ev={},sel;
+// load calendar
+function load(){
+ cal.innerHTML='';m.innerText=d.toLocaleString('default',{month:'long',year:'numeric'});
+ let y=d.getFullYear(),mo=d.getMonth(),fd=new Date(y,mo,1).getDay(),days=new Date(y,mo+1,0).getDate();
+ for(let i=0;i<fd;i++)cal.innerHTML+='<div></div>';
+ for(let i=1;i<=days;i++){
+  let k=`${y}-${mo}-${i}`,h=`<div class='day' onclick='openForm("${k}")'>${i}`;
+  if(ev[k])h+=`<div class='event'>${ev[k].title}<br>${ev[k].time}</div>`;
+
+  cal.innerHTML+=h+'</div>';
+ }}
+// change month
+function chg(n){d.setMonth(d.getMonth()+n);load();}
+// open input form
+function openForm(k){sel=k;f.style.display='block';}
+// save event
+function save(){ev[sel]={title:title.value,loc:loc.value,time:time.value};f.style.display='none';title.value=loc.value=time.value='';load();}
+load();
+</script>
+</body>
+</html>
