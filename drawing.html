@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>🎨 Draw and Save</title>
+<style>
+  body { text-align: center; font-family: sans-serif; background: #f5f5f5; }
+  canvas { border: 2px solid #333; background: #fff; cursor: crosshair; }
+  input, button { margin: 10px; padding: 5px 10px; }
+</style>
+</head>
+<body>
+
+<h2>🎨 Draw and Save</h2>
+<canvas id="canvas" width="800" height="500"></canvas><br>
+<input type="color" id="color" value="#000000">
+<input type="range" id="size" min="1" max="50" value="5">
+<button id="clear">Clear</button>
+<button id="save">Save</button>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const color = document.getElementById("color");
+const size = document.getElementById("size");
+const clearBtn = document.getElementById("clear");
+const saveBtn = document.getElementById("save");
+
+let drawing = false;
+
+// Start drawing
+canvas.addEventListener("mousedown", () => drawing = true);
+canvas.addEventListener("mouseup", () => {
+  drawing = false;
+  ctx.beginPath();
+});
+
+// Draw on canvas
+canvas.addEventListener("mousemove", (e) => {
+  if (!drawing) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  ctx.lineWidth = size.value;
+  ctx.lineCap = "round";
+  ctx.strokeStyle = color.value;
+  ctx.lineTo(x, y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+});
+
+// Clear the canvas
+clearBtn.addEventListener("click", () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
+
+// Save the drawing as an image
+saveBtn.addEventListener("click", () => {
+  const link = document.createElement("a");
+  link.download = "drawing.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+});
+</script>
+
+</body>
+</html>
