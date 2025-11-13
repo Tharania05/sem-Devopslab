@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Photo Editor</title>
+<style>
+body{text-align:center;font-family:Arial;background:#eee}
+canvas{border:2px dashed #aaa;margin:10px}
+button{margin:5px;padding:6px 12px;background:#07f;color:#fff;border:0;border-radius:4px}
+</style>
+</head>
+<body>
+
+<h3>🖼 Tiny Photo Editor</h3>
+<input type="file" id="upload" accept="image/*"><br>
+<canvas id="canv"></canvas><br>
+
+B:<input type="range" id="b" min="0" max="200" value="100">
+C:<input type="range" id="c" min="0" max="200" value="100">
+S:<input type="range" id="s" min="0" max="200" value="100"><br>
+
+<button id="rotate">Rotate</button>
+<button id="reset">Reset</button>
+<button id="save">Download</button>
+
+<script>
+let cv=document.getElementById("canv"),
+    cx=cv.getContext("2d"),
+    img=new Image(),
+    angle=0;
+
+upload.onchange=e=>{
+  img.src=URL.createObjectURL(e.target.files[0]);
+  img.onload=()=>{cv.width=img.width;cv.height=img.height;draw();}
+};
+
+[b,c,s].forEach(i=>i.oninput=draw);
+
+function draw(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  cx.filter=`brightness(${b.value}%) contrast(${c.value}%) saturate(${s.value}%)`;
+  cx.save();
+  cx.translate(cv.width/2,cv.height/2);
+  cx.rotate(angle*Math.PI/180);
+  cx.drawImage(img,-img.width/2,-img.height/2);
+  cx.restore();
+}
+
+rotate.onclick=()=>{
+  angle=(angle+90)%360;
+  let sw=angle%180!==0;
+  cv.width=sw?img.height:img.width;
+  cv.height=sw?img.width:img.height;
+  draw();
+};
+
+reset.onclick=()=>{b.value=c.value=s.value=100;angle=0;cv.width=img.width;cv.height=img.height;draw();};
+
+save.onclick=()=>{
+  let a=document.createElement("a");
+  a.download="edited.png";
+  a.href=cv.toDataURL();
+  a.click();
+};
+</script>
+
+</body>
+</html>
