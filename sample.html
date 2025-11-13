@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Jewelry - Showcase</title>
+    <style>
+        /* ====================================
+           BASE STYLES & LAYOUT
+           ==================================== */
+        
+         :root {
+            --primary-color: #A38C61;
+            /* Luxury Gold/Bronze */
+            --secondary-color: #333;
+            --background-color: #fcfcfc;
+            --discount-color: #C70039;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            line-height: 1.5;
+            color: var(--secondary-color);
+            background-image: url("image/upbgd.png");
+        }
+        
+        .ad-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 40px auto;
+            border: 1px solid rgb(182, 244, 255);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .ad-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px;
+            background-image: url("image/pink.png");
+        }
+        /* ====================================
+           TEXT SECTION
+           ==================================== */
+        
+        .text-section {
+            flex: 1;
+            padding-right: 40px;
+            text-align: center;
+        }
+        
+        .logo-text {
+            font-family: 'Times New Roman', serif;
+            font-size: 6vw;
+            color: #d4aa37;
+            margin-bottom: 5px;
+        }
+        
+        .main-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            line-height: 1;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #777;
+            margin-bottom: 30px;
+        }
+        
+        .discount {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .discount span {
+            display: block;
+            font-size: 2.5rem;
+            color: var(--discount-color);
+            margin-top: 5px;
+        }
+        
+        .order-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        
+        .order-button:hover {
+            background-color: #7A6A4E;
+            transform: translateY(-2px);
+        }
+        
+        .website-link {
+            display: block;
+            text-align: right;
+            font-size: 0.8rem;
+            color: #ccc;
+            margin-top: 20px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .website-link:hover {
+            color: var(--secondary-color);
+        }
+        /* ====================================
+           IMAGE SECTION (HEXAGON GRID)
+           ==================================== */
+        
+        .image-section {
+            flex: 1.5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hexagon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 380px;
+            /* Control the overall size */
+            height: 380px;
+        }
+        
+        .grid-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hexagon-container {
+            width: 100px;
+            height: 115px;
+            /* Height approx 1.15 times the width for a clean hexagon */
+            margin: 5px;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .hexagon-container:hover {
+            transform: scale(1.05);
+        }
+        
+        .hexagon-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        /* Adjustments for a staggered look */
+        
+        .grid-item:nth-child(1),
+        .grid-item:nth-child(4) {
+            transform: translateY(30px);
+        }
+        /* Remove the effect for central items to keep them aligned */
+        
+        .grid-item:nth-child(2),
+        .grid-item:nth-child(5) {
+            transform: translateY(0);
+        }
+        /* ====================================
+           AUTO-SCROLLING PRODUCT TRACK STYLES
+           ==================================== */
+        /* 1. Define the Scrolling Animation */
+        
+        @keyframes scroll-products {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                /* Scrolls the first set completely out of view */
+                transform: translateX(-50%);
+            }
+        }
+        
+        .product-scroll-track {
+            /* KEY: Set width to twice the container width and use flex */
+            width: 200%;
+            display: flex;
+            padding: 20px 0;
+            margin-top: 10px;
+            background-color: #f7f7f7;
+            border-top: 2px solid var(--primary-color);
+            /* Apply the animation */
+            animation: scroll-products 40s linear infinite;
+            /* 40s speed, continuous loop */
+        }
+        /* Hide scrollbar completely for a clean look */
+        
+        .product-scroll-track::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .product-scroll-track {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            background-color: #98a361;
+            /* Firefox */
+        }
+        
+        .scroll-item {
+            /* Square box styling */
+            flex-shrink: 0;
+            /* Prevents items from shrinking */
+            width: 150px;
+            height: 150px;
+            margin: 0 15px;
+            overflow: hidden;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease-out;
+            cursor: pointer;
+            border: 3px solid white;
+        }
+        
+        .scroll-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .scroll-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Class added by JavaScript to pause the animation */
+        
+        .product-scroll-track.paused {
+            animation-play-state: paused;
+        }
+        /* ====================================
+           RESPONSIVENESS (Mobile View)
+           ==================================== */
+        
+        @media (max-width: 768px) {
+            .ad-content {
+                flex-direction: column;
+                padding: 20px;
+            }
+            .text-section {
+                padding-right: 0;
+                margin-bottom: 30px;
+            }
+            .main-title {
+                font-size: 3rem;
+            }
+            .hexagon-grid {
+                width: 100%;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 5px;
+                height: auto;
+            }
+            .hexagon-container {
+                width: 80px;
+                height: 92px;
+            }
+            .grid-item:nth-child(1),
+            .grid-item:nth-child(4) {
+                transform: translateY(20px);
+            }
+            .scroll-item {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ad-container">
+        <div class="ad-content">
+            <div class="text-section"><br>
+                <h1 class="logo-text">Luxury</h1><br><br>
+                <h2 class="main-title">JEWELRY</h2>
+                <p class="subtitle">Find Your Perfect Gift</p>
+                <p class="discount">DISCOUNT <br><span>UP TO 50% OFF</span></p><a href="#" class="order-button">ORDER NOW!</a></div>
+            <div class="image-section">
+                <div class="hexagon-grid">
+                    <div class="grid-item">
+                        <div class="hexagon-container">
+                            <a href="neck.html" target="_self"><img src="image/necklaces/homeneck.jpeg" alt="Necklaces"></a>
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="hexagon-container">
+                            <a href="ear.html" target="_self"><img src="image/earrings/earHome.webp" alt="Earrings"></a>
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="hexagon-container">
+                            <a href="bangles.html" target="_self"><img src="image/brachletHome.jpeg" alt="Bracelets/Bangles"></a>
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="hexagon-container">
+                            <a href="ring.html" target="_self"><img src="image/ring/ringhome.jpg" alt="Rings"></a>
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="hexagon-container">
+                            <a href="anklet.html" target="_self"><img src="image/anklehome.jpg" alt="Anklets"></a>
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <div class="hexagon-container">
+                            <a href="all.html" target="_self"><img src="image/pendantHome.png" alt="Pendants"></a>
+                        </div>
+                    </div>
+                </div>
+            </div><a href="https://reallygreatsite.com" class="website-link">reallygreatsite.com</a></div>
+    </div>
+    <div class="product-scroll-track">
+        <div class="scroll-item"><img src="image/all/all1.webp" alt="Solitaire Necklace"></div>
+        <div class="scroll-item"><img src="image/all/banp.webp" alt="Gold Bangle"></div>
+        <div class="scroll-item"><img src="image/all/anklsimple.webp" alt="Two-Tone Anklet"></div>
+        <div class="scroll-item"><img src="image/all/eardesmod.jpg" alt="Floral Stud Earrings"></div>
+        <div class="scroll-item"><img src="image/all/plain neck.webp" alt="Rose Gold Necklace"></div>
+        <div class="scroll-item"><img src="image/all/bancross.webp" alt="Traditional Bangle"></div>
+        <div class="scroll-item"><img src="image/all/peendgs.webp" alt="Rose Gold Pendant Set"></div>
+        <div class="scroll-item"><img src="image/all/silring.webp" alt="Silver Geometric Ring"></div>
+        <div class="scroll-item"><img src="image/all/pendneckset.webp" alt="Double Heart Pendant"></div>
+        <div class="scroll-item"><img src="image/all/eargoldrin.webp" alt="Ghungroo Hoop Earrings"></div>
+        <div class="scroll-item"><img src="image/all/anklblack.jpg" alt="Elephant Anklets"></div>
+        <div class="scroll-item"><img src="image/all/goldank.webp" alt="Box Chain Anklet"></div>
+        <div class="scroll-item"><img src="image/all/all1.webp" alt="Solitaire Necklace"></div>
+        <div class="scroll-item"><img src="image/all/banp.webp" alt="Gold Bangle"></div>
+        <div class="scroll-item"><img src="image/all/anklsimple.webp" alt="Two-Tone Anklet"></div>
+        <div class="scroll-item"><img src="image/all/eardesmod.jpg" alt="Floral Stud Earrings"></div>
+        <div class="scroll-item"><img src="image/all/plain neck.webp" alt="Rose Gold Necklace"></div>
+        <div class="scroll-item"><img src="image/all/bancross.webp" alt="Traditional Bangle"></div>
+        <div class="scroll-item"><img src="image/all/peendgs.webp" alt="Rose Gold Pendant Set"></div>
+        <div class="scroll-item"><img src="image/all/silring.webp" alt="Silver Geometric Ring"></div>
+        <div class="scroll-item"><img src="image/all/pendneckset.webp" alt="Double Heart Pendant"></div>
+        <div class="scroll-item"><img src="image/all/eargoldrin.webp" alt="Ghungroo Hoop Earrings"></div>
+        <div class="scroll-item"><img src="image/all/anklblack.jpg" alt="Elephant Anklets"></div>
+        <div class="scroll-item"><img src="image/all/goldank.webp" alt="Box Chain Anklet"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+                const scrollTrack = document.querySelector('.product-scroll-track');
+                const scrollItems = document.querySelectorAll('.scroll-item');
+                // Function to pause the animation by adding the 'paused' class
+                function pauseScroll() {
+                    scrollTrack.classList.add('paused');
+                }
+                // Function to resume the animation by removing the 'paused' class
+                function resumeScroll() {
+                    scrollTrack.classList.remove('paused');
+                }
+                // 1. Pause when hovering over the entire scrolling track
+                scrollTrack.addEventListener('mouseenter', pauseScroll);
+                scrollTrack.addEventListener('mouseleave', resumeScroll);
+                // 2. Pause when hovering over an individual product (as requested)
+                scrollItems.forEach(item => {
+                    item.addEventListener('mouseenter', pauseScroll);
+                    // Note: Mouseleave on the individual item is handled by the parent track's mouseleave,
+                    // ensuring the scroll only resumes when the mouse leaves the entire section.
+                });
+            }
+
+        );
+    </script>
+</body>
+
+</html>
