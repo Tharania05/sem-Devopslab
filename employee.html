@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Employee Table</title>
+<style>
+body{text-align:center;font-family:Arial;background:#eef}
+table{border-collapse:collapse;margin:auto;background:#fff}
+th,td{border:1px solid #ccc;padding:5px}
+th{background:#0078ff;color:#fff;cursor:pointer}
+</style>
+</head>
+<body>
+<h3>👨‍💼 Employee Table</h3>
+<input id="s" placeholder="Search">
+<select id="f"><option value="">All</option><option>Engineering</option><option>HR</option><option>Marketing</option><option>Finance</option><option>Sales</option></select>
+<table><thead><tr><th data-c="name">Name</th><th data-c="email">Email</th><th data-c="dept">Dept</th></tr></thead><tbody id="tb"></tbody></table>
+<script>
+// generate data
+let d=[],depts=["Engineering","HR","Marketing","Finance","Sales"];
+async function load(){
+ let r=await fetch("https://randomuser.me/api/?results=1");let j=await r.json();
+ d=j.results.map(x=>({name:x.name.first+" "+x.name.last,email:x.email,dept:depts[Math.floor(Math.random()*5)]}));
+ show(d);
+}
+// display
+function show(a){tb.innerHTML=a.map(e=><tr><td>${e.name}</td><td>${e.email}</td><td>${e.dept}</td></tr>).join('');}
+// search/filter
+s.oninput=f.onchange=()=>show(d.filter(x=>x.name.toLowerCase().includes(s.value.toLowerCase())&&(!f.value||x.dept==f.value)));
+// sort
+document.querySelectorAll("th").forEach(th=>th.onclick=()=>{let c=th.dataset.c;d.sort((a,b)=>a[c]>b[c]?1:-1);show(d)});
+load();
+</script>
+</body>
+</html>
